@@ -130,7 +130,7 @@ class Forecaster():
             cols = [ c for c in df_cols_to_use if c in forecast.columns]
             forecast = forecast[cols]
         else: 
-            # no model found - indicative of key not being in the 
+            # no model found - indicative of key not being in the history, so cant forecast for it. 
             forecast = None
         return forecast
 
