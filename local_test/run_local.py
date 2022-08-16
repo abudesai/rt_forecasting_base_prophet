@@ -296,12 +296,12 @@ if __name__ == "__main__":
     run_hpt_list = [False]
     
     splits = [1,2,3,4]
-    # splits = [4]
+    splits = [4]
     
-    datasets = ["air_quality", "airline_passengers", "beer_sales", "food_demand", 
+    datasets = ["airline_passengers", "beer_sales", "food_demand", 
                 "stock_prices", "synthetic_daily"]
     
-    datasets = ["beer_sales"]
+    datasets = ["airline_passengers"]
     
     all_results = []
     for split in splits:
@@ -317,3 +317,4 @@ if __name__ == "__main__":
                 print("-"*60)
                         
     save_test_outputs(all_results, run_hpt, dataset_name_split=None)
+    

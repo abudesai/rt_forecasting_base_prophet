@@ -34,7 +34,7 @@ class ModelServer:
         else: return self.model
         
        
-    def predict(self, data, ):    
+    def predict(self, data ):    
         print("Making predictions ...")
                    
         preprocessor = self._get_preprocessor()

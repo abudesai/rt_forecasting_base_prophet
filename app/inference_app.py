@@ -13,7 +13,7 @@ warnings.filterwarnings('ignore')
 
 import algorithm.utils as utils
 from algorithm.model_server import ModelServer
-from algorithm.model import classifier as model
+from algorithm.model import forecaster as model
 
 prefix = '/opt/ml_vol/'
 data_schema_path = os.path.join(prefix, 'inputs', 'data_config')
@@ -27,7 +27,7 @@ data_schema = utils.get_data_schema(data_schema_path)
 
 
 # initialize your model here before the app can handle requests
-model_server = ModelServer(model_path = model_path)
+model_server = ModelServer(model_path = model_path, data_schema=data_schema)
 
 
 # The flask app for serving predictions
@@ -39,7 +39,6 @@ def ping():
     """Determine if the container is working and healthy. """
     status = 200
     response=f"Hello - I am {model.MODEL_NAME} model and I am at your service!"
-    print(response)
     return flask.Response(response=response, status=status, mimetype="application/json")
 
 
@@ -53,12 +52,13 @@ def infer():
     data = None
     
     # Convert from CSV to pandas
-    if flask.request.content_type == "application/json":
-        data = json.loads(flask.request.data)
-        data = pd.DataFrame([data])        
+    if flask.request.content_type == "text/csv":
+        data = flask.request.data.decode("utf-8")
+        s = io.StringIO(data)
+        data = pd.read_csv(s)
     else:                
         return flask.Response(
-            response="This predictor only supports CSV data", 
+            response=f"This predictor only supports 'text/csv' content type. You sent {flask.request.content_type}.", 
             status=415, mimetype="text/plain"
         )
 
@@ -66,7 +66,11 @@ def infer():
 
     # Do the prediction
     try: 
-        predictions = model_server.predict(data, data_schema)
+        data = {
+            "history": data, 
+            "sp_events": None,
+        }
+        predictions = model_server.predict(data)
         # Convert from dataframe to CSV
         out = io.StringIO()
         predictions.to_csv(out, index=False)

@@ -9,8 +9,6 @@ warnings.filterwarnings('ignore')
 
 import algorithm.utils as utils
 import algorithm.model_trainer as model_trainer
-import algorithm.preprocessing.pipeline as pipeline
-import algorithm.model.classifier as classifier
 
 # Paths for inputs, model, outputs for ml_vol mounted to the container.
 prefix = '/opt/ml_vol/'
@@ -35,17 +33,13 @@ def train():
         # Read in any hyperparameters that the user defined with algorithm submission
         hyper_parameters = utils.get_hyperparameters(hyper_param_path)
         # Read data
-        train_data = utils.get_data(data_path, data_type="training")   
+        train_data = utils.get_data(data_path)   
         # read data config
         data_schema = utils.get_data_schema(data_schema_path)
         # get trained preprocessor, model, training history 
-        preprocessor, model, history = model_trainer.get_trained_model(train_data, data_schema, hyper_parameters)        
-        # Save the processing pipeline   
-        pipeline.save_preprocessor(preprocessor, model_path)
-        # Save the model 
-        classifier.save_model(model, model_path)   
-        # Persist the history so end users can graph loss 
-        classifier.save_training_history(history, model_path)     
+        model, preprocessor = model_trainer.get_trained_model(train_data, data_schema, hyper_parameters)   
+        # Save the training artifacts
+        model_trainer.save_training_artifacts(model, preprocessor, model_path) 
         print('Done training.')
     except Exception as e:
         print("error!")

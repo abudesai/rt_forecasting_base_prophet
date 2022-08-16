@@ -53,12 +53,15 @@ def preprocess_data(data, pp_params):
 
 def train_model(processed_history, processed_sp_events, pp_params, hyper_params):       
     
-    pprint.pprint(pp_params)
+    # pprint.pprint(pp_params)
     
     model = forecaster.Forecaster(
         run_type="multi",
         series_id_cols=[pp_params["location_field"], pp_params["item_field"]],
-        additional_regressors=[model_cfg["missing_val_field"]]
+        additional_regressors=[model_cfg["missing_val_field"]],
+        uncertainty_samples = None, # make it None if we dont want uncertainty intervals,
+        interval_width  = 95, # 95% confidence interval
+        **hyper_params
         ) 
     
     model.fit(
@@ -66,7 +69,6 @@ def train_model(processed_history, processed_sp_events, pp_params, hyper_params)
         sp_events=processed_sp_events,
         verbose=True
         )
-    
     # -----------------------------------------------------
     # testing
     # forecast = model.predict(processed_history)    

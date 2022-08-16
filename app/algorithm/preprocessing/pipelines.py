@@ -103,6 +103,12 @@ def get_sp_events_pipeline(pp_params):
                 preprocessors.DateTimeCaster(
                     fields = pp_params['se_epoch_field'], 
                     ),
+            ),       
+            (
+                pp_step_names["INT_TYPE_CASTER"],
+                preprocessors.IntTypeCaster(
+                    fields = [pp_params["window_lower"], pp_params["window_upper"]], 
+                    ),
             ),
             (
                 pp_step_names["EPOCH_RESETTER"],

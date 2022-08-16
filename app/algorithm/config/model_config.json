@@ -14,6 +14,7 @@
       "DUMMY_COL_CREATOR": "dummy_col_creator",
       "STRING_TYPE_CASTER": "string_type_caster",
       "FLOAT_TYPE_CASTER": "float_type_caster",
+      "INT_TYPE_CASTER": "int_type_caster",
       "DATETIME_TYPE_CASTER": "datetime_type_caster",
       "DATETIME_TYPE_CASTER2": "datetime_type_caster2",
       "MISSING_VALUE_TAGGER": "missing_value_tagger",

@@ -116,12 +116,15 @@ class StringTypeCaster(TypeCaster):
         
 
 class FloatTypeCaster(TypeCaster):  
-    ''' Casts float features as object type if they are not already so.
-    This is needed when some categorical features have values that can inferred as numerical.
-    This causes an error when doing categorical feature engineering. 
-    '''
+    ''' Casts features to float type. '''
     def __init__(self, fields):
         super(FloatTypeCaster, self).__init__(fields, float)
+
+
+class IntTypeCaster(TypeCaster):  
+    ''' Casts features to int type. '''
+    def __init__(self, fields):
+        super(IntTypeCaster, self).__init__(fields, int)
         
 
 class DateTimeCaster(BaseEstimator, TransformerMixin):  

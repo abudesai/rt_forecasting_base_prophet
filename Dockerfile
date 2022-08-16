@@ -8,6 +8,16 @@ RUN apt-get -y update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 
+RUN pip install numpy==1.21.0
+RUN pip install pandas==1.2.1
+RUN pip install pystan==3.5.0
+RUN pip install prophet==1.1
+RUN pip install convertdate==2.4.0
+RUN pip install lunarcalendar==0.0.9
+RUN pip install holidays==0.14.2
+RUN pip install tqdm==4.64.0
+
+
 COPY ./requirements.txt .
 RUN pip3 install -r requirements.txt 
 
