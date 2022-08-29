@@ -157,7 +157,9 @@ class MissingValueTagger(BaseEstimator, TransformerMixin):
         
 
     def transform(self, data):  
-        if self.missing_tag == "": return data
+        if self.missing_tag == "": 
+            data[self.missing_field] = 0.
+            return data
         
         # find epochs with missing values
         idx = data[self.value_field] == self.missing_tag        
